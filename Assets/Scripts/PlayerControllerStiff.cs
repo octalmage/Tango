@@ -7,8 +7,6 @@ public class PlayerControllerStiff : MonoBehaviour
     public float rotationSpeed = 180f;
     private Rigidbody2D player;
 
-
-
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
