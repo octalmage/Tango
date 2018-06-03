@@ -6,6 +6,8 @@ public class PlayerControllerStiff : MonoBehaviour
     public float moveSpeed = 10f;
     public float rotationSpeed = 180f;
     private Rigidbody2D player;
+    public float externalHorizontalAxis;
+    public float externalVerticalAxis;
 
     void Start()
     {
@@ -17,6 +19,15 @@ public class PlayerControllerStiff : MonoBehaviour
     {
         var horizontalAxis = Input.GetAxisRaw("Horizontal");
         var verticalAxis = Input.GetAxisRaw("Vertical");
+
+        if (externalHorizontalAxis != horizontalAxis) {
+            horizontalAxis = externalHorizontalAxis;
+        }
+
+        if (externalVerticalAxis != verticalAxis) {
+            verticalAxis = externalVerticalAxis;
+        }
+
 
         Vector2 movement = Vector2.zero;
 
