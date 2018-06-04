@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 enum Direction
 {
@@ -33,7 +34,10 @@ public class CircleController : MonoBehaviour
     public float healthDecreaseSpeed = 0.2f;
     private float healthDecreaseTimer;
 
+    private GameObject[] finishObjects;
+
     void Start() {
+        Time.timeScale = 1;
         circle = GetComponent<Rigidbody2D>();
         direction = Direction.BottomRight;
         timeLeft = timeToTouch;
@@ -42,6 +46,8 @@ public class CircleController : MonoBehaviour
         moveSpeed = initialMoveSpeed;
         currentHealth = startingHealth;
         healthDecreaseTimer = healthDecreaseSpeed;
+        finishObjects = GameObject.FindGameObjectsWithTag("ShowOnFinish");
+        hideFinished();
     }
     
     // Update is called once per frame
@@ -81,6 +87,10 @@ public class CircleController : MonoBehaviour
             bufferTimer -= Time.deltaTime;
         } 
 
+        if (bufferTimer <= 0 && !isTouching) {
+            UnDock();
+        }
+
         if (!isTouching) {
             healthDecreaseTimer -= Time.deltaTime;
             if (healthDecreaseTimer <= 0) {
@@ -89,11 +99,10 @@ public class CircleController : MonoBehaviour
             }
         }
 
-       if (bufferTimer <= 0 && !isTouching) {
-            UnDock();
+        if (currentHealth <= 0) {
+            Time.timeScale = 0;
+            showFinished();
         }
-
- 
 
 
         healthSlider.value = currentHealth;
@@ -136,5 +145,27 @@ public class CircleController : MonoBehaviour
         moveSpeed = score + initialMoveSpeed;
         scoreText.text = score.ToString();
         currentHealth += healthRewardForDocking;
+    }
+
+    public void showFinished()
+    {
+        foreach (GameObject g in finishObjects)
+        {
+            g.SetActive(true);
+        }
+    }
+
+    //hides objects with ShowOnFinish tag
+    public void hideFinished()
+    {
+        foreach (GameObject g in finishObjects)
+        {
+            g.SetActive(false);
+        }
+    }
+
+    public void Reload()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
