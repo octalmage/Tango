@@ -20,11 +20,11 @@ public class PlayerControllerStiff : MonoBehaviour
         var horizontalAxis = Input.GetAxisRaw("Horizontal");
         var verticalAxis = Input.GetAxisRaw("Vertical");
 
-        if (externalHorizontalAxis != horizontalAxis) {
+        if (externalHorizontalAxis != 0f) {
             horizontalAxis = externalHorizontalAxis;
         }
 
-        if (externalVerticalAxis != verticalAxis) {
+        if (externalVerticalAxis != 0f) {
             verticalAxis = externalVerticalAxis;
         }
 
