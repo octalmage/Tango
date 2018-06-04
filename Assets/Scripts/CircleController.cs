@@ -15,12 +15,15 @@ public class CircleController : MonoBehaviour
     public float initialMoveSpeed = 10f;
     public float moveSpeed;
     public float rotationSpeed = 180f;
+    public float touchBuffer = 0.1f;
     private Rigidbody2D circle;
     private Direction direction;
     float timeToTouch = 1.0f;
     float timeLeft;
     private int score;
     public Text scoreText;
+    private float bufferTimer;
+    private bool isTouching = false;
 
     void Start() {
         circle = GetComponent<Rigidbody2D>();
@@ -63,10 +66,19 @@ public class CircleController : MonoBehaviour
 
         movement = movement * moveSpeed;
         circle.MovePosition((Vector2)(transform.position) + movement * Time.deltaTime);
+
+        if (bufferTimer >= 0 && !isTouching) {
+            bufferTimer -= Time.deltaTime;
+        }
+
+        if (bufferTimer <= 0 && !isTouching) {
+            UnDock();
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        isTouching = true;
         GetComponent<SpriteRenderer>().color = new Color(1f, 0.30196078f, 0.30196078f);
        
     }
@@ -74,7 +86,6 @@ public class CircleController : MonoBehaviour
     private void OnTriggerStay2D(Collider2D other)
 	{
         timeLeft -= Time.deltaTime;
-        Debug.Log(timeLeft);
         if (timeLeft <= 0)
         {
             timeLeft = timeToTouch;
@@ -84,11 +95,18 @@ public class CircleController : MonoBehaviour
             moveSpeed = score + initialMoveSpeed;
             scoreText.text = score.ToString();
         }
+
+        bufferTimer = touchBuffer;
 	}
 
 	void OnTriggerExit2D(Collider2D other)
 	{
+        isTouching = false;
+        bufferTimer = touchBuffer;
+	}
+
+    void UnDock() {
         GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
         timeLeft = timeToTouch;
-	}
+    }
 }
