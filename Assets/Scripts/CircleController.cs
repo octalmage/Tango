@@ -18,12 +18,20 @@ public class CircleController : MonoBehaviour
     public float touchBuffer = 0.1f;
     private Rigidbody2D circle;
     private Direction direction;
-    float timeToTouch = 1.0f;
-    float timeLeft;
+    public float timeToTouch = 1.0f;
+    private float timeLeft;
     private int score;
     public Text scoreText;
     private float bufferTimer;
     private bool isTouching = false;
+
+    // Health related.
+    public Slider healthSlider;
+    public int startingHealth = 100;
+    public int currentHealth;
+    public int healthRewardForDocking = 10;
+    public float healthDecreaseSpeed = 0.2f;
+    private float healthDecreaseTimer;
 
     void Start() {
         circle = GetComponent<Rigidbody2D>();
@@ -32,6 +40,8 @@ public class CircleController : MonoBehaviour
         score = 0;
         scoreText.text = "0";
         moveSpeed = initialMoveSpeed;
+        currentHealth = startingHealth;
+        healthDecreaseTimer = healthDecreaseSpeed;
     }
     
     // Update is called once per frame
@@ -69,11 +79,24 @@ public class CircleController : MonoBehaviour
 
         if (bufferTimer >= 0 && !isTouching) {
             bufferTimer -= Time.deltaTime;
+        } 
+
+        if (!isTouching) {
+            healthDecreaseTimer -= Time.deltaTime;
+            if (healthDecreaseTimer <= 0) {
+                currentHealth--;
+                healthDecreaseTimer = healthDecreaseSpeed;
+            }
         }
 
-        if (bufferTimer <= 0 && !isTouching) {
+       if (bufferTimer <= 0 && !isTouching) {
             UnDock();
         }
+
+ 
+
+
+        healthSlider.value = currentHealth;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -88,12 +111,7 @@ public class CircleController : MonoBehaviour
         timeLeft -= Time.deltaTime;
         if (timeLeft <= 0)
         {
-            timeLeft = timeToTouch;
-            System.Array values = System.Enum.GetValues(typeof(Direction));
-            direction = (Direction)values.GetValue(Random.Range(0, values.Length));
-            score++;
-            moveSpeed = score + initialMoveSpeed;
-            scoreText.text = score.ToString();
+            SuccessfulDock();
         }
 
         bufferTimer = touchBuffer;
@@ -108,5 +126,15 @@ public class CircleController : MonoBehaviour
     void UnDock() {
         GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
         timeLeft = timeToTouch;
+    }
+
+    void SuccessfulDock() {
+        timeLeft = timeToTouch;
+        System.Array values = System.Enum.GetValues(typeof(Direction));
+        direction = (Direction)values.GetValue(Random.Range(0, values.Length));
+        score++;
+        moveSpeed = score + initialMoveSpeed;
+        scoreText.text = score.ToString();
+        currentHealth += healthRewardForDocking;
     }
 }
