@@ -16,7 +16,7 @@ public class CircleController : MonoBehaviour
     public float initialMoveSpeed = 10f;
     public float moveSpeed;
     public float rotationSpeed = 180f;
-    public float touchBuffer = 0.1f;
+    public float touchBuffer = 0.2f;
     private Rigidbody2D circle;
     private Direction direction;
     public float timeToTouch = 1.0f;
@@ -98,12 +98,12 @@ public class CircleController : MonoBehaviour
                 healthDecreaseTimer = healthDecreaseSpeed;
             }
         }
-
-        if (currentHealth <= 0) {
+           
+        // 5 is when the slider looks empty.
+        if (currentHealth <= 5) {
             Time.timeScale = 0;
             showFinished();
         }
-
 
         healthSlider.value = currentHealth;
     }

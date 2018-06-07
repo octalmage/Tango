@@ -13,7 +13,7 @@ public class PlayerControllerStiff : MonoBehaviour
     {
         player = GetComponent<Rigidbody2D>();
     }
-    
+
     // Update is called once per frame
     void Update()
     {
