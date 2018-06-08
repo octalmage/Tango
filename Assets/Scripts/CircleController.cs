@@ -39,7 +39,7 @@ public class CircleController : MonoBehaviour
     void Start() {
         Time.timeScale = 1;
         circle = GetComponent<Rigidbody2D>();
-        direction = Direction.BottomRight;
+        direction = RandomDirection();
         timeLeft = timeToTouch;
         score = 0;
         scoreText.text = "0";
@@ -48,6 +48,9 @@ public class CircleController : MonoBehaviour
         healthDecreaseTimer = healthDecreaseSpeed;
         finishObjects = GameObject.FindGameObjectsWithTag("ShowOnFinish");
         hideFinished();
+
+        Vector2 randomPositionOnScreen = Camera.main.ViewportToWorldPoint(new Vector2(Random.value, Random.value));
+        circle.MovePosition(randomPositionOnScreen);
     }
     
     // Update is called once per frame
@@ -139,8 +142,7 @@ public class CircleController : MonoBehaviour
 
     void SuccessfulDock() {
         timeLeft = timeToTouch;
-        System.Array values = System.Enum.GetValues(typeof(Direction));
-        direction = (Direction)values.GetValue(Random.Range(0, values.Length));
+        direction = RandomDirection();
         score++;
         moveSpeed = score + initialMoveSpeed;
         scoreText.text = score.ToString();
@@ -167,5 +169,11 @@ public class CircleController : MonoBehaviour
     public void Reload()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private Direction RandomDirection()
+    {   
+        System.Array values = System.Enum.GetValues(typeof(Direction));
+        return (Direction)values.GetValue(Random.Range(0, values.Length));
     }
 }
