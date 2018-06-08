@@ -22,7 +22,7 @@ public class ScreenWrapping : MonoBehaviour
         topConstraint = cam.ScreenToWorldPoint(new Vector3(0.0f, Screen.height, distanceZ)).y;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (transform.position.x < leftConstraint - buffer)
         {
