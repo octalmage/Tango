@@ -28,18 +28,25 @@ public class PlayerControllerStiff : MonoBehaviour
             verticalAxis = externalVerticalAxis;
         }
 
-
         Vector2 movement = Vector2.zero;
 
-        movement.x += (transform.right).x * horizontalAxis;
-        movement.y += (transform.up).y * verticalAxis;
+        movement.x += (Vector2.right).x * horizontalAxis;
+        movement.y += (Vector2.up).y * verticalAxis;
 
         movement.Normalize();
+
+        // Rotate ship to match direction.
+        if (movement != Vector2.zero)
+        {
+            float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle -90, Vector3.forward);
+        }
 
         GameObject circle = GameObject.Find("Circle");
         CircleController circleController = circle.GetComponent<CircleController>();
 
         movement = movement * circleController.moveSpeed;
+
         player.MovePosition((Vector2)(transform.position) + movement * Time.deltaTime);
 
     }
