@@ -37,6 +37,8 @@ public class CircleController : MonoBehaviour
     public Color startColor;
     public Color dockColor;
 
+    public ParticleSystem success;
+
     private GameObject[] finishObjects;
 
     void Start() {
@@ -150,6 +152,7 @@ public class CircleController : MonoBehaviour
         moveSpeed = score + initialMoveSpeed;
         scoreText.text = score.ToString();
         currentHealth += healthRewardForDocking;
+        success.Play();
     }
 
     public void showFinished()
