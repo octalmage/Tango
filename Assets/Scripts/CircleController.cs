@@ -34,6 +34,9 @@ public class CircleController : MonoBehaviour
     public float healthDecreaseSpeed = 0.2f;
     private float healthDecreaseTimer;
 
+    public Color startColor;
+    public Color dockColor;
+
     private GameObject[] finishObjects;
 
     void Start() {
@@ -114,7 +117,7 @@ public class CircleController : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         isTouching = true;
-        GetComponent<SpriteRenderer>().color = new Color(1f, 0.30196078f, 0.30196078f);
+        GetComponent<SpriteRenderer>().color = dockColor;
        
     }
 
@@ -136,7 +139,7 @@ public class CircleController : MonoBehaviour
 	}
 
     void UnDock() {
-        GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
+        GetComponent<SpriteRenderer>().color = startColor;
         timeLeft = timeToTouch;
     }
 
