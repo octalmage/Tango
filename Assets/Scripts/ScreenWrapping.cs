@@ -10,6 +10,7 @@ public class ScreenWrapping : MonoBehaviour
     float buffer = 1.0f;
     Camera cam;
     float distanceZ;
+    public ParticleSystem particle;
 
     void Start()
     {
@@ -26,19 +27,44 @@ public class ScreenWrapping : MonoBehaviour
     {
         if (transform.position.x < leftConstraint - buffer)
         {
+            StopParticle();
             transform.position = new Vector3(rightConstraint + buffer, transform.position.y, transform.position.z);
+            StartParticle();
         }
         if (transform.position.x > rightConstraint + buffer)
         {
+            StopParticle();
             transform.position = new Vector3(leftConstraint - buffer, transform.position.y, transform.position.z);
+            StartParticle();
         }
         if (transform.position.y < bottomConstraint - buffer)
         {
+            StopParticle();
             transform.position = new Vector3(transform.position.x, topConstraint + buffer, transform.position.z);
+            StartParticle();
         }
         if (transform.position.y > topConstraint + buffer)
         {
+            StopParticle();
             transform.position = new Vector3(transform.position.x, bottomConstraint - buffer, transform.position.z);
+            StartParticle();
+        }
+    }
+       
+    // Stop particle system for screen jumping.
+    void StopParticle() 
+    {
+        if (particle != null)
+        {
+            particle.Stop();
+        }
+    }
+
+    void StartParticle() 
+    {
+        if (particle != null)
+        {
+            particle.Play();
         }
     }
 }
