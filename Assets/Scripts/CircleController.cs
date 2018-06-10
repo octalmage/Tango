@@ -41,6 +41,9 @@ public class CircleController : MonoBehaviour
 
     private GameObject[] finishObjects;
 
+    public AudioSource source;
+    public AudioClip successSound;
+
     void Start() {
         Time.timeScale = 1;
         circle = GetComponent<Rigidbody2D>();
@@ -153,6 +156,7 @@ public class CircleController : MonoBehaviour
         scoreText.text = score.ToString();
         currentHealth += healthRewardForDocking;
         success.Play();
+        source.PlayOneShot(successSound);
     }
 
     public void showFinished()

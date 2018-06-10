@@ -8,6 +8,7 @@ public class PlayerControllerStiff : MonoBehaviour
     private Rigidbody2D player;
     public float externalHorizontalAxis;
     public float externalVerticalAxis;
+    public AudioSource source;
 
     void Start()
     {
@@ -38,8 +39,13 @@ public class PlayerControllerStiff : MonoBehaviour
         // Rotate ship to match direction.
         if (movement != Vector2.zero)
         {
+            if (!source.isPlaying) {
+               source.Play();   
+            }
             float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        } else {
+            source.Stop();
         }
 
         GameObject circle = GameObject.Find("Circle");
