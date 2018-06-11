@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ShowOnFinish
   - MobileOnly
+  - ShowOnPaused
   layers:
   - Default
   - TransparentFX
