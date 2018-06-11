@@ -7,7 +7,7 @@ public class ScreenWrapping : MonoBehaviour
     float rightConstraint = Screen.width;
     float bottomConstraint = Screen.height;
     float topConstraint = Screen.height;
-    float buffer = 1.0f;
+    float buffer = 0f;
     Camera cam;
     float distanceZ;
     public ParticleSystem particle;
