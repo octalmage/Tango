@@ -153,7 +153,10 @@ public class CircleController : MonoBehaviour
         score++;
         moveSpeed = score + initialMoveSpeed;
         scoreText.text = score.ToString();
-        currentHealth += healthRewardForDocking;
+        if (currentHealth <= 90) {
+            currentHealth += healthRewardForDocking;
+        }
+
         success.Play();
         source.PlayOneShot(successSound);
     }
