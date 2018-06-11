@@ -23,6 +23,7 @@ public class CircleController : MonoBehaviour
     private float timeLeft;
     private int score;
     public Text scoreText;
+    public Text highScoreText;
     private float bufferTimer;
     private bool isTouching = false;
 
@@ -59,6 +60,8 @@ public class CircleController : MonoBehaviour
 
         Vector2 randomPositionOnScreen = Camera.main.ViewportToWorldPoint(new Vector2(Random.value, Random.value));
         circle.MovePosition(randomPositionOnScreen);
+
+        highScoreText.text = PlayerPrefs.GetInt("highscore", 0).ToString();
     }
     
     // Update is called once per frame
@@ -153,9 +156,14 @@ public class CircleController : MonoBehaviour
         score++;
         moveSpeed = score + initialMoveSpeed;
         scoreText.text = score.ToString();
-        if (currentHealth <= 90) {
-            currentHealth += healthRewardForDocking;
+        currentHealth += healthRewardForDocking;
+
+        // Don't allow health to go over starting health.
+        if (currentHealth > startingHealth) {
+            currentHealth = startingHealth;
         }
+
+        StoreHighscore(score);
 
         success.Play();
         source.PlayOneShot(successSound);
@@ -187,5 +195,16 @@ public class CircleController : MonoBehaviour
     {   
         System.Array values = System.Enum.GetValues(typeof(Direction));
         return (Direction)values.GetValue(Random.Range(0, values.Length));
+    }
+
+    void StoreHighscore(int newHighscore)
+    {
+        var oldHighscore = PlayerPrefs.GetInt("highscore", 0);
+        if (newHighscore > oldHighscore)
+        {
+            PlayerPrefs.SetInt("highscore", newHighscore);
+            highScoreText.text = newHighscore.ToString();
+        }
+        PlayerPrefs.Save();
     }
 }
