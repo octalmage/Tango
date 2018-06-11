@@ -13,8 +13,6 @@ public class OnScreenControls : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         playerControllerScript = playerGameObject.GetComponent<PlayerControllerStiff>();
     }
 
-
-
     public void OnPointerDown(PointerEventData eventData)
 	{
         switch(direction) {
