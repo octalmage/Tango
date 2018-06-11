@@ -109,9 +109,8 @@ public class CircleController : MonoBehaviour
                 healthDecreaseTimer = healthDecreaseSpeed;
             }
         }
-           
-        // 5 is when the slider looks empty.
-        if (currentHealth <= 5) {
+          
+        if (currentHealth <= 0) {
             Time.timeScale = 0;
             showFinished();
         }
