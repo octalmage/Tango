@@ -41,6 +41,7 @@ public class CircleController : MonoBehaviour
     public ParticleSystem success;
 
     private GameObject[] finishObjects;
+    private GameObject[] pausedObjects;
 
     public AudioSource source;
     public AudioClip successSound;
@@ -56,7 +57,9 @@ public class CircleController : MonoBehaviour
         currentHealth = startingHealth;
         healthDecreaseTimer = healthDecreaseSpeed;
         finishObjects = GameObject.FindGameObjectsWithTag("ShowOnFinish");
+        pausedObjects = GameObject.FindGameObjectsWithTag("ShowOnPaused");
         hideFinished();
+        HidePaused();
 
         Vector2 randomPositionOnScreen = Camera.main.ViewportToWorldPoint(new Vector2(Random.value, Random.value));
         circle.MovePosition(randomPositionOnScreen);
@@ -119,6 +122,13 @@ public class CircleController : MonoBehaviour
         }
 
         healthSlider.value = currentHealth;
+    }
+
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus) {
+            Pause();
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -185,6 +195,35 @@ public class CircleController : MonoBehaviour
             g.SetActive(false);
         }
     }
+
+    public void ShowPaused()
+    {
+        foreach (GameObject g in pausedObjects)
+        {
+            g.SetActive(true);
+        }
+    }
+   
+    public void HidePaused()
+    {
+        foreach (GameObject g in pausedObjects)
+        {
+            g.SetActive(false);
+        }
+    }
+
+    public void Pause()
+    {
+        Time.timeScale = 0;
+        ShowPaused();
+    }
+
+    public void UnPause()
+    {
+        Time.timeScale = 1;
+        HidePaused();
+    }
+
 
     public void Reload()
     {
