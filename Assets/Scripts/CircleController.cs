@@ -214,6 +214,9 @@ public class CircleController : MonoBehaviour
 
     public void Pause()
     {
+        if (finishObjects[0].activeSelf) {
+            return;
+        }
         Time.timeScale = 0;
         ShowPaused();
     }
